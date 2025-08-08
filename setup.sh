@@ -2,6 +2,7 @@
 
 set -e
 
+# TODO: fix this
 OPTS=$(getopt -o "" --long install-font,remove-xfce -n "$0" -- "$@")
 if [ $? != 0 ]; then
   echo "Usage: $0 [--install-font] [--remove-xfce]"
