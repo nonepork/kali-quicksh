@@ -1,0 +1,34 @@
+[font]
+normal.family = "Iosevka Nerd Font"
+normal.style = "Regular"
+size = 10.0
+
+[window]
+dynamic_title = true
+padding.x = 0
+padding.y = 0
+opacity = 0.5
+
+[colors.primary]
+foreground = "#FFFFFF"
+background = "#23252E"
+
+[colors.normal]
+black   = "#1F2229" # Color0
+red     = "#D41919" # Color1
+green   = "#5EBDAB" # Color2
+yellow  = "#FEA44C" # Color3
+blue    = "#367BF0" # Color4
+magenta = "#9755B3" # Color5
+cyan    = "#49AEE6" # Color6
+white   = "#E6E6E6" # Color7
+
+[colors.bright]
+black   = "#198388" # Color0Intense
+red     = "#EC0101" # Color1Intense
+green   = "#47D4B9" # Color2Intense
+yellow  = "#FF8A18" # Color3Intense
+blue    = "#277FFF" # Color4Intense
+magenta = "#962AC3" # Color5Intense
+cyan    = "#05A1F7" # Color6Intense
+white   = "#FFFFFF" # Color7Intense
