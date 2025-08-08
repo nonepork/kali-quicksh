@@ -39,6 +39,7 @@ fi
 # configurating tools
 mkdir -p "$USER_HOME/.config/i3/scripts"
 mkdir -p "$USER_HOME/.config/alacritty"
+mkdir -p "$USER_HOME/.config/tmux"
 mkdir -p "$USER_HOME/.vim/undodir"
 
 # in case of pre existing config files, we will back them up
@@ -55,8 +56,8 @@ download_or_backup() {
 }
 
 download_or_backup ".zshrc" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/.zshrc"
-download_or_backup ".config/tmux/tmux.conf" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/tmux/tmux.conf"
 download_or_backup ".vimrc" "https://github.com/nonepork/configurations/raw/refs/heads/main/vim/_vimrc_quick"
+download_or_backup ".config/tmux/tmux.conf" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/tmux/tmux.conf"
 download_or_backup ".config/alacritty/alacritty.toml" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/alacritty/alacritty.toml"
 download_or_backup ".config/i3/config" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/config"
 download_or_backup ".config/i3/blocks.conf" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/blocks.conf"
