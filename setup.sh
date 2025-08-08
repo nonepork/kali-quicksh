@@ -61,13 +61,14 @@ remove_xfce() {
 }
 
 use_custom_fonts() {
+  # TODO: dont move license and readme into it lol
   echo "Instawwing custom fonts..."
   FONT_DIR="$USER_HOME/.local/share/fonts"
   mkdir -p "$FONT_DIR"
 
-  wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/IosevkaTerm.zip -O /tmp/IosevkaTerm.zip
-  unzip -o /tmp/IosevkaTerm.zip -d "$FONT_DIR"
-  rm /tmp/IosevkaTerm.zip
+  wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Iosevka.zip -O /tmp/Iosevka.zip
+  unzip -o /tmp/Iosevka.zip -d "$FONT_DIR"
+  rm /tmp/Iosevka.zip
 
   wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/RobotoMono.zip -O /tmp/RobotoMono.zip
   unzip -o /tmp/RobotoMono.zip -d "$FONT_DIR"
@@ -81,11 +82,13 @@ WALLPAPER_DIR="/usr/share/backgrounds"
 WALLPAPER_PATH="$WALLPAPER_DIR/wallpaper.png"
 wget -q https://raw.githubusercontent.com/nonepork/kali-quicksh/refs/heads/main/wallpaper.png -O "$WALLPAPER_PATH"
 ln -sf $WALLPAPER_PATH /usr/share/desktop-base/kali-theme/login/background
-ln -sf $WALLPAPER_PATH /usr/share/desktop-base/kali-theme/wallpaper/contents/images/3840x2160.jpg
+# ln -sf $WALLPAPER_PATH /usr/share/desktop-base/kali-theme/wallpaper/contents/images/3840x2160.jpg
 
 # wm/tools
 apt remove -y vim
-apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep
+apt install -y i3 i3blocks imwheel vim-gtk3 alacritty tmux zoxide
+# WARN: use below for production, above are for testing
+# apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep
 
 if ! sudo -u "$USER_NAME" pipx list | grep -q penelope; then
   sudo -u "$USER_NAME" pipx install git+https://github.com/brightio/penelope
@@ -134,7 +137,7 @@ fi
 
 # --- removing unwanted stuff ---
 # apt purge -y lxpolkit
-# we are doing this lastly, because i3 and stuff
+# we are doing this lastly, otherwise it'll mess with WM and other configs
 if [ "$REMOVE_XFCE" = true ]; then
   remove_xfce
 fi
