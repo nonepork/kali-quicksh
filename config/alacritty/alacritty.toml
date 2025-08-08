@@ -1,7 +1,7 @@
-[font]
-normal.family = "Iosevka Nerd Font"
-normal.style = "Regular"
-size = 10.0
+# [font]
+# normal.family = "Iosevka Nerd Font"
+# normal.style = "Regular"
+# size = 10.0
 
 [window]
 dynamic_title = true
