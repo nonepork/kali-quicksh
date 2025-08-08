@@ -2,27 +2,6 @@
 
 set -e
 
-# --- permission / environement check ---
-if [ "$EUID" -ne 0 ]; then
-  echo "You nyeed to wun as woot (sudo ./setup.sh)"
-  exit 1
-fi
-
-if ! grep -qi kali /etc/os-release; then
-  echo "This doesn't s-seem to be kawi winyux >w<"
-  exit 1
-fi
-
-# get sudo user
-USER_NAME="${SUDO_USER:-kali}"
-USER_HOME=$(eval echo "~$USER_NAME")
-
-clear
-echo "Wunnying as woot but configuwing fow user: $USER_NAME ($USER_HOME)"
-
-apt update && apt upgrade -y
-
-# --- optional parameters ---
 OPTS=$(getopt -o "" --long install-font,remove-xfce -n "$0" -- "$@")
 if [ $? != 0 ]; then
   echo "Usage: $0 [--install-font] [--remove-xfce]"
@@ -51,9 +30,30 @@ while true; do
   esac
 done
 
+# --- permission / environement check ---
+if [ "$EUID" -ne 0 ]; then
+  echo "You nyeed to wun as woot (sudo ./setup.sh)"
+  exit 1
+fi
+
+if ! grep -qi kali /etc/os-release; then
+  echo "This doesn't s-seem to be kawi winyux >w<"
+  exit 1
+fi
+
+# get sudo user
+USER_NAME="${SUDO_USER:-kali}"
+USER_HOME=$(eval echo "~$USER_NAME")
+
+clear
+echo "Wunnying as woot but configuwing fow user: $USER_NAME ($USER_HOME)"
+
+# --- update n functions ---
+apt update && apt upgrade -y
+
 remove_xfce() {
   echo "Wemoving XFCE desktop meta packages and extras..."
-  apt purge -y kali-desktop-xfce kali-undercover xfce4-goodies qterminal xfce4-panel mousepad
+  apt purge -y kali-desktop-xfce qterminal xfce4-panel
   apt autoremove --purge -y
   echo "Weinstawwing minyimaw essentials..."
   apt install -y thunar xfce4-screensaver
@@ -74,13 +74,6 @@ use_custom_fonts() {
 
   fc-cache -vf "$FONT_DIR"
 }
-
-if [ "$REMOVE_XFCE" = true ]; then
-  remove_xfce
-fi
-if [ "$INSTALL_FONTS" = true ]; then
-  use_custom_fonts
-fi
 
 # --- appearances ---
 WALLPAPER_DIR="/usr/share/backgrounds"
@@ -139,7 +132,14 @@ else
 fi
 
 # --- removing unwanted stuff ---
-apt purge -y lxpolkit
+# apt purge -y lxpolkit
+# we are doing this lastly, because i3 and stuff
+if [ "$REMOVE_XFCE" = true ]; then
+  remove_xfce
+fi
+if [ "$INSTALL_FONTS" = true ]; then
+  use_custom_fonts
+fi
 
 echo "Setup compwete ^-^, remembew to weboot and waunch with i3"
 echo "If you installed fonts, remember to uncomment the font line in alacritty.toml and i3 config"
