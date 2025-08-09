@@ -3,33 +3,37 @@
 set -e
 
 # TODO: fix this
-OPTS=$(getopt -o "" --long install-font,remove-xfce -n "$0" -- "$@")
-if [ $? != 0 ]; then
-  echo "Usage: $0 [--install-font] [--remove-xfce]"
-  exit 1
-fi
-eval set -- "$OPTS"
+INSTALL_FONTS=false
+REMOVE_XFCE=false
 
-while true; do
-  case "$1" in
-  --install-font)
-    INSTALL_FONTS=true
+usage() {
+  echo "Usage: $0 [--install-font] [--remove-xfce]"
+}
+
+handle_options() {
+  while [ $# -gt 0 ]; do
+    case "$1" in
+    --help)
+      usage
+      exit 0
+      ;;
+    --install-fonts)
+      INSTALL_FONTS=true
+      ;;
+    --remove-xfce)
+      REMOVE_XFCE=true
+      ;;
+    *)
+      echo "Invalid option: $1" >&2
+      usage
+      exit 1
+      ;;
+    esac
     shift
-    ;;
-  --remove-xfce)
-    REMOVE_XFCE=true
-    shift
-    ;;
-  --)
-    shift
-    break
-    ;;
-  *)
-    echo "Usage: $0 [--install-font] [--remove-xfce]"
-    exit 1
-    ;;
-  esac
-done
+  done
+}
+
+handle_options "$@"
 
 # --- permission / environement check ---
 if [ "$EUID" -ne 0 ]; then
@@ -82,12 +86,16 @@ WALLPAPER_DIR="/usr/share/backgrounds"
 WALLPAPER_PATH="$WALLPAPER_DIR/wallpaper.png"
 wget -q https://raw.githubusercontent.com/nonepork/kali-quicksh/refs/heads/main/wallpaper.png -O "$WALLPAPER_PATH"
 ln -sf $WALLPAPER_PATH /usr/share/desktop-base/kali-theme/login/background
-# ln -sf $WALLPAPER_PATH /usr/share/desktop-base/kali-theme/wallpaper/contents/images/3840x2160.jpg
+# WARN: sort of hacky way
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -n -t string -s $WALLPAPER_PATH
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-path -n -t string -s $WALLPAPER_PATH
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -n -t string -s $WALLPAPER_PATH
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace1/last-image -n -t string -s $WALLPAPER_PATH
 
 # wm/tools
 apt remove -y vim
 apt install -y i3 i3blocks imwheel vim-gtk3 alacritty tmux zoxide
-# WARN: use below for production, above are for testing
+# TODO: use below for production, above are for testing
 # apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep
 
 if ! sudo -u "$USER_NAME" pipx list | grep -q penelope; then
@@ -136,8 +144,8 @@ else
 fi
 
 # --- removing unwanted stuff ---
-# apt purge -y lxpolkit
 # we are doing this lastly, otherwise it'll mess with WM and other configs
+apt purge -y lxpolkit
 if [ "$REMOVE_XFCE" = true ]; then
   remove_xfce
 fi
