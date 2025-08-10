@@ -2,12 +2,15 @@
 
 set -e
 
-# TODO: fix this
 INSTALL_FONTS=false
 REMOVE_XFCE=false
 
 usage() {
-  echo "Usage: $0 [--install-font] [--remove-xfce]"
+  echo "Usage: $0 [OPTIONS]"
+  echo "Options:"
+  echo "--help               Show this help message"
+  echo "--install-fonts      Install custom fonts (Iosevka and RobotoMono)"
+  echo "--remove-xfce        Remove replaced XFCE components"
 }
 
 handle_options() {
@@ -65,17 +68,16 @@ remove_xfce() {
 }
 
 use_custom_fonts() {
-  # TODO: dont move license and readme into it lol
   echo "Instawwing custom fonts..."
   FONT_DIR="$USER_HOME/.local/share/fonts"
   mkdir -p "$FONT_DIR"
 
   wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Iosevka.zip -O /tmp/Iosevka.zip
-  unzip -o /tmp/Iosevka.zip -d "$FONT_DIR"
+  unzip -jo /tmp/Iosevka.zip '*.ttf' -d "$FONT_DIR"
   rm /tmp/Iosevka.zip
 
   wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/RobotoMono.zip -O /tmp/RobotoMono.zip
-  unzip -o /tmp/RobotoMono.zip -d "$FONT_DIR"
+  unzip -jo /tmp/RobotoMono.zip -d '*.ttf' "$FONT_DIR"
   rm /tmp/RobotoMono.zip
 
   fc-cache -vf "$FONT_DIR"
@@ -86,7 +88,7 @@ WALLPAPER_DIR="/usr/share/backgrounds"
 WALLPAPER_PATH="$WALLPAPER_DIR/wallpaper.png"
 wget -q https://raw.githubusercontent.com/nonepork/kali-quicksh/refs/heads/main/wallpaper.png -O "$WALLPAPER_PATH"
 ln -sf $WALLPAPER_PATH /usr/share/desktop-base/kali-theme/login/background
-# WARN: sort of hacky way
+# HACK: globally setting wallpaper for XFCE
 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -n -t string -s $WALLPAPER_PATH
 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-path -n -t string -s $WALLPAPER_PATH
 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -n -t string -s $WALLPAPER_PATH
@@ -95,7 +97,7 @@ xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace1/la
 # wm/tools
 apt remove -y vim
 apt install -y i3 i3blocks imwheel vim-gtk3 alacritty tmux zoxide
-# TODO: use below for production, above are for testing
+# INFO: use below for production, above are for testing
 # apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep
 
 if ! sudo -u "$USER_NAME" pipx list | grep -q penelope; then
