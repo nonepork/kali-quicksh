@@ -27,7 +27,7 @@ handle_options() {
       REMOVE_XFCE=true
       ;;
     *)
-      echo "Invalid option: $1" >&2
+      echo "Invawid option: $1" >&2
       usage
       exit 1
       ;;
@@ -70,17 +70,18 @@ remove_xfce() {
 use_custom_fonts() {
   echo "Instawwing custom fonts..."
   FONT_DIR="$USER_HOME/.local/share/fonts"
-  mkdir -p "$FONT_DIR"
+  sudo -u "$USER_NAME" mkdir -p "$FONT_DIR"
 
-  wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Iosevka.zip -O /tmp/Iosevka.zip
-  unzip -jo /tmp/Iosevka.zip "*.ttf" -d "$FONT_DIR"
+  sudo -u "$USER_NAME" wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Iosevka.zip -O /tmp/Iosevka.zip
+  sudo -u "$USER_NAME" unzip -jo /tmp/Iosevka.zip "*.ttf" -d "$FONT_DIR"
   rm /tmp/Iosevka.zip
 
-  wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/RobotoMono.zip -O /tmp/RobotoMono.zip
-  unzip -jo /tmp/RobotoMono.zip "*.ttf" -d "$FONT_DIR"
+  sudo -u "$USER_NAME" wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/RobotoMono.zip -O /tmp/RobotoMono.zip
+  sudo -u "$USER_NAME" unzip -jo /tmp/RobotoMono.zip "*.ttf" -d "$FONT_DIR"
   rm /tmp/RobotoMono.zip
 
-  fc-cache -vf "$FONT_DIR"
+  chown -R "$USER_NAME":"$USER_NAME" "$FONT_DIR"
+  sudo -u "$USER_NAME" fc-cache -vf "$FONT_DIR"
 }
 
 # --- appearances ---
