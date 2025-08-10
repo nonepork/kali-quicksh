@@ -73,11 +73,11 @@ use_custom_fonts() {
   mkdir -p "$FONT_DIR"
 
   wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Iosevka.zip -O /tmp/Iosevka.zip
-  unzip -jo /tmp/Iosevka.zip '*.ttf' -d "$FONT_DIR"
+  unzip -jo /tmp/Iosevka.zip "*.ttf" -d "$FONT_DIR"
   rm /tmp/Iosevka.zip
 
   wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/RobotoMono.zip -O /tmp/RobotoMono.zip
-  unzip -jo /tmp/RobotoMono.zip -d '*.ttf' "$FONT_DIR"
+  unzip -jo /tmp/RobotoMono.zip "*.ttf" -d "$FONT_DIR"
   rm /tmp/RobotoMono.zip
 
   fc-cache -vf "$FONT_DIR"
@@ -89,10 +89,10 @@ WALLPAPER_PATH="$WALLPAPER_DIR/wallpaper.png"
 wget -q https://raw.githubusercontent.com/nonepork/kali-quicksh/refs/heads/main/wallpaper.png -O "$WALLPAPER_PATH"
 ln -sf $WALLPAPER_PATH /usr/share/desktop-base/kali-theme/login/background
 # HACK: globally setting wallpaper for XFCE
-xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -n -t string -s $WALLPAPER_PATH
-xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-path -n -t string -s $WALLPAPER_PATH
-xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -n -t string -s $WALLPAPER_PATH
-xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace1/last-image -n -t string -s $WALLPAPER_PATH
+sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -n -t string -s "$WALLPAPER_PATH"
+sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-path -n -t string -s "$WALLPAPER_PATH"
+sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -n -t string -s "$WALLPAPER_PATH"
+sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace1/last-image -n -t string -s "$WALLPAPER_PATH"
 
 # wm/tools
 apt remove -y vim
