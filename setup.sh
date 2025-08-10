@@ -60,15 +60,13 @@ echo "Wunnying as woot but configuwing fow user: $USER_NAME ($USER_HOME)"
 apt update && apt upgrade -y
 
 remove_xfce() {
+  # INFO: I don't know which packages will break and which doesn't, so I will just remove tested ones.
   echo "Wemoving XFCE desktop meta packages and extras..."
-  apt purge -y --allow-remove-essential kali-desktop-xfce
-  apt purge -y \
-    qterminal xfce4-panel xfce4-appfinder xfce4-session \
-    xfce4-settings xfdesktop4 xfwm4 mousepad \
-    xfce4-taskmanager xfce4-*-plugin
+  apt purge -y --allow-remove-essential kali-desktop-xfce qterminal
+  apt purge -y xfce4-panel xfce4-whiskermenu-plugin xfce4-places-plugin
   apt autoremove --purge -y
   echo "Weinstawwing minyimaw essentials..."
-  apt install -y thunar xfce4-screensaver
+  apt install -y thunar xfce4-screensaver lightdm lightdm-gtk-greeter
 }
 
 use_custom_fonts() {
