@@ -14,6 +14,6 @@ if ! grep -qi kali /etc/os-release; then
 fi
 
 echo "Wemoving XFCE desktop meta packages and extras..."
-apt purge -y --allow-remove-essential kali-desktop-xfce kali-undercover qterminal mousepad xfce4-screenshooter xfce4-taskmanager
+apt purge -y --allow-remove-essential kali-desktop-xfce kali-undercover qterminal mousepad
 apt autoremove --purge -y
 apt install -y thunar xfce4-screensaver lightdm lightdm-gtk-greeter # Just in case
