@@ -11,8 +11,11 @@ This config uses Iosevka and Roboto Nerd Font, but it's optional and false by de
 Simply download the bash script (setup.sh), and run:
 
 ```bash
-sudo ./setup.sh
+sudo ./setup.sh [--install-fonts]
 ```
+
+> [!WARNING]
+> Only execute post_setup.sh AFTER rebooting and only if you want to remove some xfce components
 
 ### Credits
 

@@ -1,19 +1,14 @@
 #!/bin/bash
 
-# TODO:
-# fix purge
-
 set -e
 
 INSTALL_FONTS=false
-REMOVE_XFCE=false
 
 usage() {
   echo "Usage: $0 [OPTIONS]"
   echo "Options:"
   echo "--help               Show this help message"
   echo "--install-fonts      Install custom fonts (Iosevka and RobotoMono)"
-  echo "--remove-xfce        Remove replaced XFCE components"
 }
 
 handle_options() {
@@ -25,9 +20,6 @@ handle_options() {
       ;;
     --install-fonts)
       INSTALL_FONTS=true
-      ;;
-    --remove-xfce)
-      REMOVE_XFCE=true
       ;;
     *)
       echo "Invawid option: $1" >&2
@@ -61,15 +53,6 @@ echo "Wunnying as woot but configuwing fow user: $USER_NAME ($USER_HOME)"
 
 # --- update n functions ---
 apt update && apt upgrade -y
-
-remove_xfce() {
-  # INFO: Since we use lockscreen/lightdm, not all of them will be removed
-  echo "Wemoving XFCE desktop meta packages and extras..."
-  apt purge -y --allow-remove-essential kali-desktop-xfce kali-undercover qterminal mousepad xfce4-screenshooter xfce4-taskmanager
-  apt autoremove --purge -y
-  echo "Weinstawwing minyimaw essentials..."
-  apt install -y thunar xfce4-screensaver lightdm lightdm-gtk-greeter
-}
 
 install_fonts() {
   echo "Instawwing custom fonts..."
@@ -152,9 +135,6 @@ fi
 # --- removing unwanted stuff ---
 # we are doing this lastly, otherwise it'll mess with WM and other configs
 apt purge -y lxpolkit
-if [ "$REMOVE_XFCE" = true ]; then
-  remove_xfce
-fi
 if [ "$INSTALL_FONTS" = true ]; then
   install_fonts
 fi
