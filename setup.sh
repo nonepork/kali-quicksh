@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO:
+# fix purge
+
 set -e
 
 INSTALL_FONTS=false
@@ -62,14 +65,14 @@ apt update && apt upgrade -y
 remove_xfce() {
   # INFO: I don't know which packages will break and which doesn't, so I will just remove tested ones.
   echo "Wemoving XFCE desktop meta packages and extras..."
-  apt purge -y --allow-remove-essential kali-desktop-xfce qterminal
-  apt purge -y xfce4-panel xfce4-whiskermenu-plugin xfce4-places-plugin
+  # apt purge -y --allow-remove-essential kali-desktop-xfce qterminal mousepad
+  # apt purge -y xfce4-panel xfce4-whiskermenu-plugin xfce4-places-plugin
   apt autoremove --purge -y
   echo "Weinstawwing minyimaw essentials..."
   apt install -y thunar xfce4-screensaver lightdm lightdm-gtk-greeter
 }
 
-use_custom_fonts() {
+install_fonts() {
   echo "Instawwing custom fonts..."
   FONT_DIR="$USER_HOME/.local/share/fonts"
   mkdir -p "$FONT_DIR"
@@ -154,7 +157,7 @@ if [ "$REMOVE_XFCE" = true ]; then
   remove_xfce
 fi
 if [ "$INSTALL_FONTS" = true ]; then
-  use_custom_fonts
+  install_fonts
 fi
 
 echo "Setup compwete ^-^, remembew to weboot and waunch with i3"
