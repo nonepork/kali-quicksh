@@ -63,10 +63,9 @@ echo "Wunnying as woot but configuwing fow user: $USER_NAME ($USER_HOME)"
 apt update && apt upgrade -y
 
 remove_xfce() {
-  # INFO: I don't know which packages will break and which doesn't, so I will just remove tested ones.
+  # INFO: Since we use lockscreen/lightdm, not all of them will be removed
   echo "Wemoving XFCE desktop meta packages and extras..."
-  # apt purge -y --allow-remove-essential kali-desktop-xfce qterminal mousepad
-  # apt purge -y xfce4-panel xfce4-whiskermenu-plugin xfce4-places-plugin
+  apt purge -y --allow-remove-essential kali-desktop-xfce kali-undercover qterminal mousepad xfce4-screenshooter xfce4-taskmanager
   apt autoremove --purge -y
   echo "Weinstawwing minyimaw essentials..."
   apt install -y thunar xfce4-screensaver lightdm lightdm-gtk-greeter
