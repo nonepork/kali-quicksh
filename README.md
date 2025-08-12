@@ -4,7 +4,12 @@ A script tailored to quickly set up kali for me, I'm sorry for the echo messages
 
 ### Before you do
 
-This config uses Iosevka and Roboto Nerd Font, but it's optional and false by default.
+This script:
+
+- Uses i3 + i3blocks
+- Installs some tools
+- Iosevka and Roboto Nerd Font, but it's optional and false by default.
+- Removes some xfce, also optional
 
 ### How to use?
 

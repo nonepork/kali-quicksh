@@ -124,9 +124,7 @@ sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorV
 
 # wm/tools
 apt remove -y vim
-apt install -y i3 i3blocks imwheel vim-gtk3 alacritty tmux zoxide feh
-# INFO: use below for production, above are for testing
-# apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep
+apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep
 
 if ! sudo -u "$USER_NAME" pipx list | grep -q penelope; then
   sudo -u "$USER_NAME" pipx install git+https://github.com/brightio/penelope
