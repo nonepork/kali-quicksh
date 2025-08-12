@@ -3,12 +3,14 @@
 set -e
 
 INSTALL_FONTS=false
+REMOVE_XFCE=false
 
 usage() {
   echo "Usage: $0 [OPTIONS]"
   echo "Options:"
   echo "--help               Show this help message"
   echo "--install-fonts      Install custom fonts (Iosevka and RobotoMono)"
+  echo "--remove-xfce        Remove replaced XFCE components"
 }
 
 handle_options() {
@@ -21,6 +23,9 @@ handle_options() {
     --install-fonts)
       INSTALL_FONTS=true
       ;;
+    --remove-xfce)
+      REMOVE_XFCE=true
+      ;;
     *)
       echo "Invawid option: $1" >&2
       usage
@@ -31,16 +36,44 @@ handle_options() {
   done
 }
 
+powerful_echo() {
+  local type=$1
+  local message=$2
+
+  case $type in
+  "info")
+    echo "\n\e[1;36m┌─ INFO ─────────────────────────────────┐\e[0m"
+    echo "\e[1;36m│\e[0m $message"
+    echo "\e[1;36m└────────────────────────────────────────┘\e[0m\n"
+    ;;
+  "success")
+    echo "\n\e[1;32m┌─ SUCCESS ──────────────────────────────┐\e[0m"
+    echo "\e[1;32m│\e[0m $message"
+    echo "\e[1;32m└────────────────────────────────────────┘\e[0m\n"
+    ;;
+  "error")
+    echo "\n\e[1;31m┌─ ERROR ────────────────────────────────┐\e[0m"
+    echo "\e[1;31m│\e[0m $message"
+    echo "\e[1;31m└────────────────────────────────────────┘\e[0m\n"
+    ;;
+  "warning")
+    echo "\n\e[1;33m┌─ WARNING ──────────────────────────────┐\e[0m"
+    echo "\e[1;33m│\e[0m $message"
+    echo "\e[1;33m└────────────────────────────────────────┘\e[0m\n"
+    ;;
+  esac
+}
+
 handle_options "$@"
 
 # --- permission / environement check ---
 if [ "$EUID" -ne 0 ]; then
-  echo "You nyeed to wun as woot (sudo ./setup.sh)"
+  powerful_echo "error" "You nyeed to wun as woot (sudo ./setup.sh)"
   exit 1
 fi
 
 if ! grep -qi kali /etc/os-release; then
-  echo "This doesn't s-seem to be kawi winyux >w<"
+  powerful_echo "error" "This doesn't s-seem to be kawi winyux >w<"
   exit 1
 fi
 
@@ -49,13 +82,21 @@ USER_NAME="${SUDO_USER:-kali}"
 USER_HOME=$(eval echo "~$USER_NAME")
 
 clear
-echo "Wunnying as woot but configuwing fow user: $USER_NAME ($USER_HOME)"
+powerful_echo "info" "Wunnying as woot but configuwing fow user: $USER_NAME ($USER_HOME)"
 
 # --- update n functions ---
 apt update && apt upgrade -y
 
+powerful_echo "info" "Installation starts, this may take a while, pwease wait >w<"
+
+remove_xfce() {
+  # INFO: This is bad, sorry.
+  powerful_echo "warning" "Wemoving XFCE desktop meta packages and extras..."
+  apt purge -y --allow-remove-essential kali-desktop-xfce kali-undercover qterminal mousepad
+}
+
 install_fonts() {
-  echo "Instawwing custom fonts..."
+  powerful_echo "info" "Instawwing custom fonts..."
   FONT_DIR="$USER_HOME/.local/share/fonts"
   mkdir -p "$FONT_DIR"
 
@@ -83,7 +124,7 @@ sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorV
 
 # wm/tools
 apt remove -y vim
-apt install -y i3 i3blocks imwheel vim-gtk3 alacritty tmux zoxide
+apt install -y i3 i3blocks imwheel vim-gtk3 alacritty tmux zoxide feh
 # INFO: use below for production, above are for testing
 # apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep
 
@@ -107,7 +148,7 @@ download_or_backup() {
   local dest="$USER_HOME/$file"
 
   if [ -f "$dest" ]; then
-    echo "Backing up existing $file to $file.bak >w<"
+    powerful_echo "info" "Backing up existing $file to $file.bak >w<"
     mv "$dest" "$dest.bak"
   fi
   sudo -u "$USER_NAME" wget -q -O "$dest" "$url"
@@ -123,13 +164,13 @@ download_or_backup ".config/i3/scripts/vpn-ip.sh" "https://github.com/nonepork/k
 
 ALACRITTY_PATH=$(command -v alacritty)
 if [ -z "$ALACRITTY_PATH" ]; then
-  echo "I t-thought I instaww awacwitty?!?1"
+  powerful_echo "warning" "I t-thought I instaww awacwitty?!?1"
 else
   if ! update-alternatives --query x-terminal-emulator | grep -q "$ALACRITTY_PATH"; then
     update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$ALACRITTY_PATH" 50
   fi
   update-alternatives --set x-terminal-emulator "$ALACRITTY_PATH"
-  echo "Set alacritty as default tewminyaw"
+  powerful_echo "info" "Set alacritty as default tewminyaw"
 fi
 
 # --- removing unwanted stuff ---
@@ -138,6 +179,9 @@ apt purge -y lxpolkit
 if [ "$INSTALL_FONTS" = true ]; then
   install_fonts
 fi
+if [ "$REMOVE_XFCE" = true ]; then
+  remove_xfce
+fi
 
-echo "Setup compwete ^-^, remembew to weboot and waunch with i3"
-echo "If you installed fonts, remember to uncomment the font line in alacritty.toml and i3 config"
+powerful_echo "success" "Setup compwete ^-^, remembew to weboot and waunch with i3"
+powerful_echo "info" "If you installed fonts, remember to uncomment the font line in alacritty.toml and i3 config"
