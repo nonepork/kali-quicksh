@@ -14,6 +14,12 @@ Simply download the bash script (setup.sh), and run:
 sudo ./setup.sh
 ```
 
+To know the optional parameters, type:
+
+```bash
+sudo ./setup.sh --help
+```
+
 ### Credits
 
 - https://github.com/blacklanternsecurity/kali-setup-script/
