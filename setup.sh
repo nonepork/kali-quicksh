@@ -124,7 +124,7 @@ sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorV
 
 # wm/tools
 apt remove -y vim
-apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep
+apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep subfinder
 
 if ! sudo -u "$USER_NAME" pipx list | grep -q penelope; then
   sudo -u "$USER_NAME" pipx install git+https://github.com/brightio/penelope
@@ -169,6 +169,17 @@ else
   fi
   update-alternatives --set x-terminal-emulator "$ALACRITTY_PATH"
   powerful_echo "info" "Set alacritty as default tewminyaw"
+fi
+
+I3_PATH=$(command -v i3)
+if [ -z "$I3_PATH" ]; then
+  powerful_echo "warning" "I-I can't find i3!! Is it even instawwed? >_<"
+else
+  if ! update-alternatives --query x-session-manager | grep -q "$I3_PATH"; then
+    update-alternatives --install /usr/bin/x-session-manager x-session-manager "$I3_PATH" 50
+  fi
+  update-alternatives --set x-session-manager "$I3_PATH"
+  powerful_echo "info" "Set i3 as defauwt sesshion managew!"
 fi
 
 # --- removing unwanted stuff ---
