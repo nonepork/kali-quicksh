@@ -193,5 +193,5 @@ if [ "$REMOVE_XFCE" = true ]; then
   remove_xfce
 fi
 
-powerful_echo "success" "Setup compwete ^-^, remembew to weboot and waunch with i3"
+powerful_echo "success" "Setup compwete ^-^, remembew to weboot first!"
 powerful_echo "info" "If you installed fonts, remember to uncomment the font line in alacritty.toml and i3 config"
