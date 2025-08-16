@@ -124,7 +124,7 @@ sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorV
 
 # wm/tools
 apt remove -y vim
-apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep subfinder ciphey steghide
+apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep subfinder python3-ciphey steghide
 
 sudo -u "$USER_NAME" pipx install git+https://github.com/brightio/penelope
 sudo -u "$USER_NAME" pipx install search-that-hash
