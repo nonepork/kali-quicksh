@@ -158,8 +158,10 @@ download_or_backup ".config/alacritty/alacritty.toml" "https://github.com/nonepo
 download_or_backup ".config/i3/config" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/config"
 download_or_backup ".config/i3/blocks.conf" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/blocks.conf"
 download_or_backup ".config/i3/scripts/vpn-ip.sh" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/vpn-ip.sh"
+download_or_backup ".config/i3/scripts/memory.sh" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/memory.sh"
 
 chmod +x "$USER_HOME/.config/i3/scripts/vpn-ip.sh"
+chmod +x "$USER_HOME/.config/i3/scripts/memory.sh"
 
 ALACRITTY_PATH=$(command -v alacritty)
 if [ -z "$ALACRITTY_PATH" ]; then
