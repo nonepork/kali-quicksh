@@ -124,11 +124,10 @@ sudo -u "$USER_NAME" xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorV
 
 # wm/tools
 apt remove -y vim
-apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep subfinder
+apt install -y i3 i3blocks feh imwheel seclists vim-gtk3 libreoffice libreoffice-gtk4 remmina ghidra gdb feroxbuster crackmapexec python3-pwntools alacritty tmux zoxide ripgrep subfinder ciphey steghide
 
-if ! sudo -u "$USER_NAME" pipx list | grep -q penelope; then
-  sudo -u "$USER_NAME" pipx install git+https://github.com/brightio/penelope
-fi
+sudo -u "$USER_NAME" pipx install git+https://github.com/brightio/penelope
+sudo -u "$USER_NAME" pipx install search-that-hash
 
 # --- configurating tools ---
 mkdir -p "$USER_HOME/.config/i3/scripts"
@@ -159,6 +158,8 @@ download_or_backup ".config/alacritty/alacritty.toml" "https://github.com/nonepo
 download_or_backup ".config/i3/config" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/config"
 download_or_backup ".config/i3/blocks.conf" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/blocks.conf"
 download_or_backup ".config/i3/scripts/vpn-ip.sh" "https://github.com/nonepork/kali-quicksh/raw/refs/heads/main/config/i3/vpn-ip.sh"
+
+chmod +x "$USER_HOME/.config/i3/scripts/vpn-ip.sh"
 
 ALACRITTY_PATH=$(command -v alacritty)
 if [ -z "$ALACRITTY_PATH" ]; then
